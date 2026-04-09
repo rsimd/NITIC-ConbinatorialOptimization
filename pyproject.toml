@@ -1,0 +1,13 @@
+[project]
+name = "nitic-combinatorial-optimization"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.2"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "jupyter-book>=2.1.4",
+    "sphinxcontrib-mermaid>=2.0.1",
+]

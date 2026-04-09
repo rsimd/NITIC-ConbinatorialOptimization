@@ -1,0 +1,20 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: 組合せ最適化ノート（Jupyter Book / MyST）
+  description: 組合せ最適化、遺伝的アルゴリズム、TSP を扱う MyST プロジェクト
+  keywords:
+    - combinatorial optimization
+    - genetic algorithm
+    - TSP
+  github: https://github.com/rsimd/NITIC-ConbinatorialOptimization
+  toc:
+    - file: index.md
+    - file: lecture01_intro_optimization.md
+    - file: lecture02_ga_tsp.md
+
+site:
+  template: book-theme
+  options:
+    logo_text: CombOpt
+    logo_url: https://github.com/rsimd/NITIC-ConbinatorialOptimization
