@@ -11,7 +11,8 @@ project:
   toc:
     - file: index.md
     - file: lecture01_intro_optimization.md
-    - file: lecture02_ga_tsp.ipynb
+    - file: lecture02_ga_binary.ipynb
+    - file: lecture03_ga_tsp.ipynb
 
 site:
   template: book-theme
