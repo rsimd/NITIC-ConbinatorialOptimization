@@ -12,7 +12,7 @@ project:
     - file: index.md
     - file: lecture01_intro_optimization.md
     - file: lecture02_ga_binary.ipynb
-    - file: lecture03_ga_tsp.ipynb
+    - file: lecture03_ga_tsp_formal.ipynb
 
 site:
   template: book-theme
