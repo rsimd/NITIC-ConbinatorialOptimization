@@ -11,3 +11,6 @@ wheels/
 
 # MyST build outputs
 _build
+
+# Local logs
+report.log

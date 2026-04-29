@@ -8,6 +8,7 @@ dependencies = [
     "matplotlib>=3.10.8",
     "matplotlib-fontja>=1.1.0",
     "numpy>=2.4.4",
+    "pyswarms>=1.3.0",
     "scikit-learn>=1.8.0",
 ]
 

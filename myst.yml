@@ -13,6 +13,7 @@ project:
     - file: lecture01_intro_optimization.md
     - file: lecture02_ga_binary.ipynb
     - file: lecture03_ga_tsp_formal.ipynb
+    - file: lecture04_pso.ipynb
 
 site:
   template: book-theme
