@@ -1,0 +1,105 @@
+# Cursor index: exclude generated, third-party, secrets, and large binaries.
+# Keep source, configs, and uv.lock indexed.
+
+# Virtual environments: do NOT ignore the whole .venv/ — Cursor/Jupyter needs
+# .venv/bin/python, pyvenv.cfg, and .venv/share/jupyter/kernels (kernel.json) must stay
+# visible for Jupyter. Ignore lib/include only; do not ignore share/.
+**/.venv/lib/
+**/.venv/include/
+**/venv/lib/
+**/venv/include/
+**/env/lib/
+**/env/include/
+.env/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# Packaging / build
+dist/
+build/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Jupyter Book / MyST / Sphinx (HTML and theme build trees)
+**/_build/
+
+# uv (local cache only; keep uv.lock indexed)
+.uv/
+
+# Pixi (if used)
+.pixi/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Secrets (never index)
+.env
+.env.*
+!.env.example
+
+# Experiment tracking & ML tooling outputs
+wandb/
+lightning_logs/
+mlruns/
+/runs/
+tensorboard/
+tensorboard_logs/
+.neptune/
+.aim/
+.dvc/cache/
+
+# Hugging Face / Keras caches often created under project root
+.cache/
+.keras/
+
+# NLTK / similar downloads when placed in-repo
+nltk_data/
+
+# Large ML / data artifacts (local downloads and checkpoints)
+*.h5
+*.hdf5
+*.npz
+*.npy
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.pkl
+*.pickle
+*.parquet
+*.arrow
+*.feather
+*.bin
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# Nested Git worktrees (history/objects are noise for code search)
+**/.git/
