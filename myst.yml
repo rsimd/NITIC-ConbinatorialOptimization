@@ -15,6 +15,7 @@ project:
     - file: lecture03_ga_tsp_formal.ipynb
     - file: lecture04_pso.ipynb
     - file: lecture05_aco_tsp.ipynb
+    - file: lecture06_de.ipynb
 
 site:
   template: book-theme
