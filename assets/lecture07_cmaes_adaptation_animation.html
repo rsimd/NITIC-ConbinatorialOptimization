@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMA-ES adaptation animation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #cbd5e1;
+      --panel: #ffffff;
+      --soft: #f8fafc;
+      --contour: #2563eb;
+      --path: #f59e0b;
+      --ellipse: #dc2626;
+      --sample: #ffffff;
+      --sample-edge: #111827;
+      --valley: #0f766e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--panel);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    .demo {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .demo-header {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .demo-header h1 {
+      margin: 0;
+      font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+      letter-spacing: 0;
+    }
+
+    .demo-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .legend {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      font-size: 0.9rem;
+    }
+
+    .legend-title {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .swatch {
+      width: 22px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--ink);
+    }
+
+    .swatch.samples {
+      width: 12px;
+      height: 12px;
+      margin-left: 5px;
+      border: 1.5px solid var(--sample-edge);
+      background: var(--sample);
+    }
+
+    .swatch.path {
+      background: var(--path);
+    }
+
+    .swatch.ellipse {
+      background: var(--ellipse);
+    }
+
+    .swatch.valley {
+      background: var(--valley);
+    }
+
+    .status {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .status strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .status span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, auto) minmax(160px, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      width: min(100%, 620px);
+    }
+
+    button,
+    select {
+      min-height: 36px;
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    button {
+      min-width: 42px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    button:hover,
+    select:hover {
+      border-color: #475569;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--ellipse);
+    }
+
+    .axis {
+      stroke: #94a3b8;
+      stroke-width: 1;
+    }
+
+    .grid-line {
+      stroke: #dbe3ef;
+      stroke-width: 1;
+    }
+
+    .contour {
+      fill: none;
+      stroke: var(--contour);
+      stroke-width: 1.35;
+      opacity: 0.18;
+    }
+
+    .valley-line {
+      stroke: var(--valley);
+      stroke-dasharray: 8 7;
+      stroke-width: 2.5;
+      opacity: 0.9;
+    }
+
+    .mean-path {
+      fill: none;
+      stroke: var(--path);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .search-ellipse {
+      fill: rgba(220, 38, 38, 0.08);
+      stroke: var(--ellipse);
+      stroke-width: 3;
+    }
+
+    .sample {
+      fill: var(--sample);
+      stroke: var(--sample-edge);
+      stroke-width: 1.4;
+    }
+
+    .optimum {
+      fill: var(--ellipse);
+      stroke: #ffffff;
+      stroke-width: 1.8;
+    }
+
+    .mean-dot {
+      fill: var(--path);
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .plot-label {
+      fill: var(--ink);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .plot-small {
+      fill: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 780px) {
+      .demo {
+        padding: 12px;
+      }
+
+      .stage {
+        grid-template-columns: 1fr;
+      }
+
+      .legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .legend-title {
+        grid-column: 1 / -1;
+      }
+
+      .status {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        grid-template-columns: repeat(3, auto) minmax(120px, 1fr);
+      }
+
+      .controls select {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="demo" data-testid="cmaes-adaptation-demo">
+    <header class="demo-header">
+      <h1>CMA-ES: 探索分布の楕円が谷の向きへ適応する</h1>
+      <p>赤い楕円は候補解を生成する正規分布の広がりである．世代が進むにつれて，谷に沿う方向を広く，谷を横切る方向を狭く探索するように変わる．</p>
+    </header>
+
+    <section class="stage" aria-label="CMA-ES の探索分布のアニメーション">
+      <svg id="cmaes-viz" viewBox="0 0 920 620" role="img" aria-labelledby="viz-title viz-desc">
+        <title id="viz-title">CMA-ES の探索分布が谷の方向へ適応する様子</title>
+        <desc id="viz-desc">斜めの悪スケール関数に対して，候補解，平均ベクトルの軌跡，探索分布の楕円が世代ごとに更新される。</desc>
+        <defs>
+          <marker id="arrow-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"></path>
+          </marker>
+        </defs>
+        <rect x="42" y="28" width="560" height="560" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+        <g id="grid"></g>
+        <g id="contours"></g>
+        <line id="x-axis" class="axis"></line>
+        <line id="y-axis" class="axis"></line>
+        <line id="valley-line" class="valley-line" marker-end="url(#arrow-head)"></line>
+        <path id="mean-path" class="mean-path"></path>
+        <g id="samples"></g>
+        <ellipse id="search-ellipse" class="search-ellipse"></ellipse>
+        <path id="optimum-star" class="optimum"></path>
+        <circle id="mean-dot" class="mean-dot" r="7"></circle>
+        <text id="ellipse-label" class="plot-label">探索分布 σ²C</text>
+        <text id="mean-label" class="plot-small">平均 m</text>
+        <text x="634" y="70" class="plot-label">見方</text>
+        <text x="634" y="102" class="plot-small">候補解を評価し，良かった点</text>
+        <text x="634" y="124" class="plot-small">の方向へ平均 m が進む．</text>
+        <text x="634" y="164" class="plot-small">同時に，分布の形 C が</text>
+        <text x="634" y="186" class="plot-small">谷の向きへ回転・伸縮する．</text>
+        <text x="64" y="22" class="plot-small">目的関数の等高線</text>
+      </svg>
+
+      <aside class="legend">
+        <p class="legend-title">図中の要素</p>
+        <div class="legend-item"><span class="swatch samples"></span><span>白い点: その世代の候補解</span></div>
+        <div class="legend-item"><span class="swatch path"></span><span>橙色の線: 平均ベクトルの軌跡</span></div>
+        <div class="legend-item"><span class="swatch ellipse"></span><span>赤い楕円: 探索分布の広がり</span></div>
+        <div class="legend-item"><span class="swatch valley"></span><span>緑の破線: 谷が伸びる向き</span></div>
+      </aside>
+    </section>
+
+    <section class="status" aria-live="polite">
+      <div>
+        <strong id="generation-label">第 1 世代</strong>
+        <span id="generation-note">まだ探索分布はほぼ丸く，谷の向きと合っていない．</span>
+      </div>
+      <div class="controls" aria-label="アニメーション操作">
+        <button id="prev-button" type="button" aria-label="1 世代戻る">‹</button>
+        <button id="play-button" type="button" aria-label="再生または一時停止">一時停止</button>
+        <button id="next-button" type="button" aria-label="1 世代進む">›</button>
+        <input id="generation-slider" type="range" min="0" max="35" value="0" aria-label="世代を選ぶ">
+        <select id="speed-select" aria-label="再生速度">
+          <option value="0.7">0.7x</option>
+          <option value="1" selected>1.0x</option>
+          <option value="1.5">1.5x</option>
+        </select>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const plot = { x: 42, y: 28, size: 560 };
+    const domain = { min: -4.5, max: 4.5 };
+    const maxGeneration = 35;
+    const valleyAngle = 35 * Math.PI / 180;
+    const u = [Math.cos(valleyAngle), Math.sin(valleyAngle)];
+    const v = [-Math.sin(valleyAngle), Math.cos(valleyAngle)];
+    const notes = [
+      "まだ探索分布はほぼ丸く，谷の向きと合っていない．",
+      "良い候補解が谷に沿って現れ始め，平均 m が斜めへ動く．",
+      "分布の楕円が谷の方向へ回転し，横方向の無駄な探索が減る．",
+      "谷に沿う方向は広く，谷を横切る方向は狭く探索できている．"
+    ];
+
+    const state = {
+      generation: 0,
+      playing: !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      speed: 1,
+      lastTick: 0
+    };
+
+    const elements = {
+      grid: document.getElementById("grid"),
+      contours: document.getElementById("contours"),
+      xAxis: document.getElementById("x-axis"),
+      yAxis: document.getElementById("y-axis"),
+      valleyLine: document.getElementById("valley-line"),
+      meanPath: document.getElementById("mean-path"),
+      samples: document.getElementById("samples"),
+      ellipse: document.getElementById("search-ellipse"),
+      optimum: document.getElementById("optimum-star"),
+      meanDot: document.getElementById("mean-dot"),
+      ellipseLabel: document.getElementById("ellipse-label"),
+      meanLabel: document.getElementById("mean-label"),
+      generationLabel: document.getElementById("generation-label"),
+      generationNote: document.getElementById("generation-note"),
+      slider: document.getElementById("generation-slider"),
+      playButton: document.getElementById("play-button"),
+      prevButton: document.getElementById("prev-button"),
+      nextButton: document.getElementById("next-button"),
+      speedSelect: document.getElementById("speed-select")
+    };
+
+    function scale() {
+      return plot.size / (domain.max - domain.min);
+    }
+
+    function mapPoint(point) {
+      const s = scale();
+      return [
+        plot.x + (point[0] - domain.min) * s,
+        plot.y + (domain.max - point[1]) * s
+      ];
+    }
+
+    function screenAngleRadians(theta) {
+      return -theta;
+    }
+
+    function easeOutCubic(x) {
+      return 1 - Math.pow(1 - x, 3);
+    }
+
+    function mulberry32(seed) {
+      return function random() {
+        let t = seed += 0x6d2b79f5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function normalSamples(seed, count) {
+      const random = mulberry32(seed);
+      const values = [];
+      while (values.length < count) {
+        const a = Math.max(random(), 1e-9);
+        const b = random();
+        const r = Math.sqrt(-2 * Math.log(a));
+        values.push(r * Math.cos(2 * Math.PI * b));
+        if (values.length < count) {
+          values.push(r * Math.sin(2 * Math.PI * b));
+        }
+      }
+      return values;
+    }
+
+    function rotateLocal(theta, x, y) {
+      const c = Math.cos(theta);
+      const s = Math.sin(theta);
+      return [c * x - s * y, s * x + c * y];
+    }
+
+    function generationState(generation) {
+      const t = generation / maxGeneration;
+      const align = easeOutCubic(t);
+      const along = 4.15 * Math.pow(1 - t, 1.45);
+      const cross = 1.12 * Math.pow(1 - t, 2.15) * Math.cos(0.22 * generation);
+      const mean = [
+        along * u[0] + cross * v[0],
+        along * u[1] + cross * v[1]
+      ];
+      const theta = valleyAngle * align + (1 - align) * 0.16 * Math.sin(0.45 * generation);
+      const radiusScale = 1.36 * Math.exp(-generation / 24) + 0.18;
+      const major = radiusScale * (1.0 + 1.65 * align);
+      const minor = Math.max(0.12, radiusScale * (0.88 - 0.66 * align));
+      const noise = normalSamples(1453 + generation * 97, 32);
+      const samples = [];
+      for (let i = 0; i < 16; i += 1) {
+        const local = rotateLocal(theta, noise[2 * i] * major * 0.45, noise[2 * i + 1] * minor * 0.62);
+        samples.push([mean[0] + local[0], mean[1] + local[1]]);
+      }
+      return { align, mean, theta, major, minor, samples };
+    }
+
+    const states = Array.from({ length: maxGeneration + 1 }, (_, generation) => generationState(generation));
+
+    function setLine(line, a, b) {
+      const [x1, y1] = mapPoint(a);
+      const [x2, y2] = mapPoint(b);
+      line.setAttribute("x1", x1);
+      line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2);
+      line.setAttribute("y2", y2);
+    }
+
+    function starPath(center, outerRadius, innerRadius, points) {
+      const [cx, cy] = center;
+      const commands = [];
+      for (let i = 0; i < points * 2; i += 1) {
+        const radius = i % 2 === 0 ? outerRadius : innerRadius;
+        const angle = -Math.PI / 2 + (i * Math.PI) / points;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+        commands.push(`${i === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`);
+      }
+      return `${commands.join(" ")} Z`;
+    }
+
+    function createSvgElement(tag, attrs = {}) {
+      const node = document.createElementNS(SVG_NS, tag);
+      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+      return node;
+    }
+
+    function drawStaticLayers() {
+      const ticks = [-4, -2, 0, 2, 4];
+      ticks.forEach((tick) => {
+        const vertical = createSvgElement("line", { class: "grid-line" });
+        setLine(vertical, [tick, domain.min], [tick, domain.max]);
+        elements.grid.appendChild(vertical);
+        const horizontal = createSvgElement("line", { class: "grid-line" });
+        setLine(horizontal, [domain.min, tick], [domain.max, tick]);
+        elements.grid.appendChild(horizontal);
+      });
+
+      setLine(elements.xAxis, [domain.min, 0], [domain.max, 0]);
+      setLine(elements.yAxis, [0, domain.min], [0, domain.max]);
+      setLine(elements.valleyLine, [-4.25 * u[0], -4.25 * u[1]], [4.15 * u[0], 4.15 * u[1]]);
+
+      const optimum = mapPoint([0, 0]);
+      elements.optimum.setAttribute("d", starPath(optimum, 14, 6, 5));
+
+      const contourLevels = [2, 5, 9, 14, 21, 30, 42, 58, 78, 104];
+      contourLevels.forEach((level, index) => {
+        const rx = Math.sqrt(level) * scale();
+        const ry = Math.sqrt(level / 80) * scale();
+        const ellipse = createSvgElement("ellipse", {
+          class: "contour",
+          cx: optimum[0],
+          cy: optimum[1],
+          rx,
+          ry,
+          transform: `rotate(${-35} ${optimum[0]} ${optimum[1]})`,
+          style: `opacity: ${0.12 + index * 0.018}`
+        });
+        elements.contours.appendChild(ellipse);
+      });
+    }
+
+    function pathForMeans(untilGeneration) {
+      return states
+        .slice(0, untilGeneration + 1)
+        .map((snapshot, index) => {
+          const [x, y] = mapPoint(snapshot.mean);
+          return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
+        })
+        .join(" ");
+    }
+
+    function updateSamples(samples) {
+      elements.samples.replaceChildren();
+      samples.forEach((sample) => {
+        const [x, y] = mapPoint(sample);
+        const node = createSvgElement("circle", {
+          class: "sample",
+          cx: x.toFixed(2),
+          cy: y.toFixed(2),
+          r: 5
+        });
+        elements.samples.appendChild(node);
+      });
+    }
+
+    function updateGeneration(generation) {
+      state.generation = (generation + maxGeneration + 1) % (maxGeneration + 1);
+      const snapshot = states[state.generation];
+      const [cx, cy] = mapPoint(snapshot.mean);
+      const rotation = screenAngleRadians(snapshot.theta) * 180 / Math.PI;
+      const rx = snapshot.major * scale();
+      const ry = snapshot.minor * scale();
+
+      elements.meanPath.setAttribute("d", pathForMeans(state.generation));
+      elements.ellipse.setAttribute("cx", cx.toFixed(2));
+      elements.ellipse.setAttribute("cy", cy.toFixed(2));
+      elements.ellipse.setAttribute("rx", rx.toFixed(2));
+      elements.ellipse.setAttribute("ry", ry.toFixed(2));
+      elements.ellipse.setAttribute("transform", `rotate(${rotation.toFixed(2)} ${cx.toFixed(2)} ${cy.toFixed(2)})`);
+      elements.meanDot.setAttribute("cx", cx.toFixed(2));
+      elements.meanDot.setAttribute("cy", cy.toFixed(2));
+      elements.meanLabel.setAttribute("x", (cx + 12).toFixed(2));
+      elements.meanLabel.setAttribute("y", (cy - 12).toFixed(2));
+      elements.ellipseLabel.setAttribute("x", (cx + 28).toFixed(2));
+      elements.ellipseLabel.setAttribute("y", (cy + 34).toFixed(2));
+      updateSamples(snapshot.samples);
+
+      const phase = Math.min(3, Math.floor((state.generation / maxGeneration) * 4));
+      elements.generationLabel.textContent = `第 ${state.generation + 1} 世代`;
+      elements.generationNote.textContent = notes[phase];
+      elements.slider.value = String(state.generation);
+      elements.playButton.textContent = state.playing ? "一時停止" : "再生";
+    }
+
+    function step(delta) {
+      updateGeneration(state.generation + delta);
+    }
+
+    function animate(timestamp) {
+      if (state.playing && timestamp - state.lastTick > 720 / state.speed) {
+        step(1);
+        state.lastTick = timestamp;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    elements.playButton.addEventListener("click", () => {
+      state.playing = !state.playing;
+      state.lastTick = performance.now();
+      updateGeneration(state.generation);
+    });
+
+    elements.prevButton.addEventListener("click", () => {
+      state.playing = false;
+      step(-1);
+    });
+
+    elements.nextButton.addEventListener("click", () => {
+      state.playing = false;
+      step(1);
+    });
+
+    elements.slider.addEventListener("input", (event) => {
+      state.playing = false;
+      updateGeneration(Number(event.target.value));
+    });
+
+    elements.speedSelect.addEventListener("change", (event) => {
+      state.speed = Number(event.target.value);
+    });
+
+    drawStaticLayers();
+    updateGeneration(0);
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
