@@ -2,9 +2,9 @@
 > The large language model (LLM) used by Cursor follows the model selected in the editor.
 > Site configuration is documented in [myst.yml](myst.yml).
 
-# 組合せ最適化ノート（Jupyter Book / MyST）
+# 組合せ最適化・ブラックボックス最適化ノート（Jupyter Book / MyST）
 
-[Jupyter Book](https://jupyterbook.org/)（[MyST](https://mystmd.org/)）でビルドする Markdown ドキュメントである。
+[Jupyter Book](https://jupyterbook.org/)（[MyST](https://mystmd.org/)）でビルドする Markdown ドキュメントである。組合せ最適化とブラックボックス最適化を扱う。
 
 ## ローカルでプレビューする
 

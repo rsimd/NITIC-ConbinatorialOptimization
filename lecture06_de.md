@@ -6,6 +6,8 @@ description: 進化差分法（DE）の原理，SciPy による連続最適化�
 # 第6回：Differential Evolution（DE）
 
 ```{note}
+:class: dropdown
+:open: true
 このページは **MyST Markdown** として管理している．対話的に実行する場合は，Jupyter / VS Code / Cursor で本ファイルを開くか，下の Python コードブロックをノートブックへコピーして用いる．
 ```
 
@@ -103,29 +105,10 @@ $$
 
 ## 3. 疑似コード
 
-```text
-アルゴリズム: DE/rand/1/bin
-入力: 目的関数 f, 探索範囲 bounds, 集団サイズ NP, スケール F, 交叉率 CR, 最大世代数 T_max
-
-# 初期化
-NP 個の個体からなる集団 X を bounds 上に一様ランダムで生成する
-すべての個体について f を評価する
-
-for t = 1 .. T_max:          # 世代ループ
-    for each target i:      # 各ターゲット個体
-        # 変異: r1, r2, r3 は i と互いに異なる添字から選ぶ
-        pick r1, r2, r3
-        v_i = x_r1 + F * (x_r2 - x_r3)
-        v_i を bounds 内にクリップ（任意）
-
-        # 交叉（二項交叉）: 各次元 j で乱数 ≤ CR なら u_ij ← v_ij，そうでなければ u_ij ← x_ij
-        #                 かつ，少なくとも1次元は v_ij を採用（j_rand による強制）
-
-        # 選択: 良い方だけ残す（greedy）
-        if f(u_i) <= f(x_i):
-            x_i = u_i
-
-return X の中で最良の個体
+```{iframe} /NITIC-ConbinatorialOptimization/assets/lecture06_de_pseudocode.html
+:class: de-pseudocode-frame
+:title: DE/rand/1/bin の疑似コード
+:width: 100%
 ```
 
 ---

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1rem 1.1rem 1.2rem;
+      overflow-x: auto;
+      box-sizing: border-box;
+    }
+
+    .pseudocode {
+      min-width: 780px;
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .ps-root {
+      margin: 0;
+    }
+
+    .ps-algorithm {
+      margin: 0;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .ps-line-number {
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+<pre id="pseudocode" class="pseudocode">\begin{algorithm}
+\caption{Ant System for symmetric TSP}
+\begin{algorithmic}
+\REQUIRE symmetric distance matrix $D$, number of ants $M$, iterations $K$
+\REQUIRE parameters $\alpha &gt; 0$, $\beta &gt; 0$, $\rho \in (0,1)$, $Q &gt; 0$
+\ENSURE best tour $\pi^*$ and its length $L^*$
+\STATE initialize pheromone matrix $\tau$ with small positive values
+\STATE $L^* \gets +\infty$
+\FOR{$t = 1,\ldots,K$}
+  \STATE $S \gets \emptyset$
+  \FOR{$k = 1,\ldots,M$}
+    \STATE choose a start city
+    \STATE construct tour $\pi$ by sampling next cities according to Eq. (2)
+    \STATE compute tour length $L$
+    \STATE $S \gets S \cup \{(\pi,L)\}$
+    \IF{$L &lt; L^*$}
+      \STATE $\pi^* \gets \pi$, $L^* \gets L$
+    \ENDIF
+  \ENDFOR
+  \STATE evaporate all pheromones according to Eq. (3)
+  \STATE deposit pheromones for tours in $S$ according to Eqs. (4)(5)
+\ENDFOR
+\RETURN $\pi^*, L^*$
+\end{algorithmic}
+\end{algorithm}</pre>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const target = document.getElementById("pseudocode");
+      if (!window.pseudocode || !target) {
+        return;
+      }
+      const fallback = target.textContent;
+      try {
+        window.pseudocode.renderElement(target, { lineNumber: true });
+      } catch (error) {
+        target.textContent = fallback;
+        target.dataset.renderError = "true";
+        console.warn("pseudocode.js render failed", error);
+      }
+    });
+  </script>
+</body>
+</html>

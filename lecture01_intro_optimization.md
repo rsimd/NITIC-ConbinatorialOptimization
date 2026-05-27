@@ -1,6 +1,8 @@
 # 第1回：導入 — 組合せ最適化とは何か
 
 ```{dropdown} NOTE: この資料について
+:class: dropdown
+:open: true
 この資料は組合せ最適化の導入をまとめた学習用テキストである。  
 図や式は補足説明とあわせて読むと理解しやすい。
 ```
@@ -44,6 +46,8 @@ $$
 
 
 ```{dropdown} NOTE: 数式表現の読み方
+:class: dropdown
+:open: true
 ここでの英語表現は次の意味です。
 
 - `minimize (or maximize)`: 「目的関数 $f(x)$ をできるだけ小さく（または大きく）する」という意味です。  
@@ -63,6 +67,8 @@ $$
 
 
 ```{important}
+:class: dropdown
+:open: true
 「良い解」とは、目的関数の値が良いだけでなく、制約を満たしている解である。制約違反の解は通常「実行不能解（feasible でない解）」として扱う。
 ```
 
@@ -132,6 +138,8 @@ $$
 - 生産計画
 
 ```{tip}
+:class: dropdown
+:open: true
 現実問題では「単一の目的関数」だけでなく、複数目的（コスト・品質・公平性など）の
 バランスを取る必要がある。  
 このときは重み付き和や制約化などで単一目的に落とし込むことが多い。
@@ -165,6 +173,8 @@ $$
 - 遺伝的プログラミング（GP）・進化戦略（ES）
 
 ```{warning}
+:class: dropdown
+:open: true
 メタヒューリスティクスは「万能アルゴリズム」ではない。  
 解表現、近傍、制約処理、パラメータ設定が性能を大きく左右する。
 ```
@@ -223,7 +233,8 @@ $$
 ## 6. 第1回ミニ演習（授業内）
 
 ```{admonition} 演習テーマ
-:class: seealso
+:class: seealso dropdown
+:open: true
 「自分の身近な問題を1つ、組合せ最適化として定義する」
 ```
 
@@ -282,6 +293,8 @@ print(candidate, objective(candidate))
 ```
 
 ```{dropdown} NOTE: サンプルコードの位置づけ
+:class: dropdown
+:open: true
 上記コードは「最適化アルゴリズム」ではなく、目的関数評価の最小例である。  
 次回以降で探索アルゴリズムを追加する。
 ```
@@ -306,7 +319,8 @@ print(candidate, objective(candidate))
 4. 自分が興味を持つ実問題を1つ挙げ、解表現の案を示せ。
 
 ```{admonition} 次回予告
-:class: hint
+:class: hint dropdown
+:open: true
 第2回は「遺伝的アルゴリズム（GA）で巡回セールスマン問題（TSP）を解く」を扱う。  
 順列表現、評価関数、選択・交叉・突然変異、世代交代の流れを、実装の骨格とともに学ぶ。
 ```

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1rem 1.1rem 1.2rem;
+      overflow-x: auto;
+      box-sizing: border-box;
+    }
+
+    .pseudocode {
+      min-width: 820px;
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .ps-root {
+      margin: 0;
+    }
+
+    .ps-algorithm {
+      margin: 0;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .ps-line-number {
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+<pre id="pseudocode" class="pseudocode">\begin{algorithm}
+\caption{PSO (minimization)}
+\begin{algorithmic}
+\REQUIRE objective function $f$, swarm size $N$, dimension $d$, max iterations $T_{\max}$, bounds $[x_{\min},x_{\max}]^d$
+\REQUIRE parameters $w$, $c_1$, $c_2$, and optional velocity limit $v_{\max}$
+\ENSURE global best position $g$
+\FOR{$i = 1,\ldots,N$}
+  \STATE initialize $x_i$ uniformly in the domain
+  \STATE initialize $v_i$ as a small random vector or zero vector
+  \STATE $p_i \gets x_i$
+\ENDFOR
+\STATE $g \gets \arg\min_{x \in \{p_1,\ldots,p_N\}} f(x)$
+\FOR{$t = 1,\ldots,T_{\max}$}
+  \FOR{$i = 1,\ldots,N$}
+    \FOR{$k = 1,\ldots,d$}
+      \STATE draw $r_1,r_2 \sim U(0,1)$
+      \STATE $v_{i,k} \gets w v_{i,k} + c_1 r_1(p_{i,k}-x_{i,k}) + c_2 r_2(g_k-x_{i,k})$
+      \STATE clip $v_{i,k}$ to $[-v_{\max},v_{\max}]$ if needed
+    \ENDFOR
+    \STATE $x_i \gets x_i + v_i$
+    \STATE project $x_i$ into the feasible domain if needed
+    \IF{$f(x_i) &lt; f(p_i)$}
+      \STATE $p_i \gets x_i$
+    \ENDIF
+    \IF{$f(x_i) &lt; f(g)$}
+      \STATE $g \gets x_i$
+    \ENDIF
+  \ENDFOR
+\ENDFOR
+\RETURN $g$
+\end{algorithmic}
+\end{algorithm}</pre>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const target = document.getElementById("pseudocode");
+      if (!window.pseudocode || !target) {
+        return;
+      }
+      const fallback = target.textContent;
+      try {
+        window.pseudocode.renderElement(target, { lineNumber: true });
+      } catch (error) {
+        target.textContent = fallback;
+        target.dataset.renderError = "true";
+        console.warn("pseudocode.js render failed", error);
+      }
+    });
+  </script>
+</body>
+</html>

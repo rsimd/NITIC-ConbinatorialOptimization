@@ -1,0 +1,270 @@
+/* Let the main article column grow with the browser width. */
+.article-grid {
+  grid-template-columns:
+    [screen-start screen-inset-start] 0.5rem
+    [page-start page-inset-start body-outset-start body-start gutter-left-start body-inset-start middle-start]
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    [gutter-left-end] minmax(0, 1fr)
+    minmax(0, 1fr)
+    [gutter-right-start] minmax(0, 1fr)
+    minmax(0, 1fr)
+    [middle-end body-inset-end body-end gutter-right-end body-outset-end page-inset-end page-end]
+    0.5rem [screen-inset-end screen-end];
+}
+
+@media (min-width: 768px) {
+  .article-grid {
+    grid-template-columns:
+      [screen-start] 0.25rem
+      [screen-inset-start page-start page-inset-start body-outset-start] minmax(1rem, 3vw)
+      [body-start gutter-left-start] 1rem
+      [body-inset-start] minmax(0, 1fr)
+      [middle-start] minmax(0, 1fr)
+      [gutter-left-end] minmax(0, 1fr)
+      minmax(0, 1fr)
+      [gutter-right-start] minmax(0, 1fr)
+      [middle-end] minmax(0, 1fr)
+      [body-inset-end] 1rem
+      [body-end gutter-right-end] minmax(1rem, 3vw)
+      [body-outset-end page-inset-end page-end screen-inset-end]
+      0.25rem [screen-end];
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-grid {
+    grid-template-columns:
+      [screen-start] 0.25rem
+      [screen-inset-start page-start] 1.5rem
+      [page-inset-start body-outset-start] 1.5rem
+      [body-start gutter-left-start] 1rem
+      [body-inset-start] minmax(0, 1fr)
+      [middle-start] minmax(0, 1fr)
+      [gutter-left-end] minmax(0, 1fr)
+      minmax(0, 1fr)
+      [gutter-right-start] minmax(0, 1fr)
+      [middle-end] minmax(0, 1fr)
+      [body-inset-end] 1rem
+      [body-end gutter-right-end] 1.5rem
+      [body-outset-end] 14rem
+      [page-inset-end] 1.5rem
+      [page-end] 1.5rem
+      [screen-inset-end] 0.25rem [screen-end];
+  }
+}
+
+@media (min-width: 1280px) {
+  .article-grid,
+  .xl\:article-grid {
+    grid-template-columns:
+      [screen-start] 0.25rem
+      [screen-inset-start] 1rem
+      [page-start] 0
+      [page-inset-start] 18rem
+      [body-outset-start] 1.5rem
+      [body-start gutter-left-start] 1rem
+      [body-inset-start] minmax(0, 1fr)
+      [middle-start] minmax(0, 1fr)
+      [gutter-left-end] minmax(0, 1fr)
+      minmax(0, 1fr)
+      [gutter-right-start] minmax(0, 1fr)
+      [middle-end] minmax(0, 1fr)
+      [body-inset-end] 1rem
+      [body-end gutter-right-end] 1.5rem
+      [body-outset-end] 14rem
+      [page-inset-end] 1.5rem
+      [page-end] 1rem
+      [screen-inset-end] 0.25rem [screen-end];
+  }
+}
+
+@media (min-width: 1536px) {
+  .article-grid,
+  .xl\:article-grid {
+    grid-template-columns:
+      [screen-start] 0.5rem
+      [screen-inset-start] 1rem
+      [page-start] 0
+      [page-inset-start] 18rem
+      [body-outset-start] 1.5rem
+      [body-start gutter-left-start] 1rem
+      [body-inset-start] minmax(0, 1fr)
+      [middle-start] minmax(0, 1fr)
+      [gutter-left-end] minmax(0, 1fr)
+      minmax(0, 1fr)
+      [gutter-right-start] minmax(0, 1fr)
+      [middle-end] minmax(0, 1fr)
+      [body-inset-end] 1rem
+      [body-end gutter-right-end] 1.5rem
+      [body-outset-end] 14rem
+      [page-inset-end] 1.5rem
+      [page-end] 1rem
+      [screen-inset-end] 0.5rem [screen-end];
+  }
+}
+
+.cmaes-sampling-scroll {
+  margin: 1rem auto;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.cmaes-sampling-overlay {
+  position: relative;
+  width: min(940px, 100%);
+  min-width: 720px;
+  margin: 0 auto;
+}
+
+.cmaes-sampling-overlay p {
+  margin: 0;
+}
+
+.cmaes-sampling-overlay img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cmaes-sampling-label {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  padding: 0.18rem 0.42rem;
+  border: 1px solid rgba(148, 163, 184, 0.75);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.cmaes-sampling-label .katex {
+  font-size: 0.92rem;
+}
+
+.cmaes-sampling-label-left {
+  left: 15.4%;
+  top: 16.4%;
+}
+
+.cmaes-sampling-label-middle {
+  left: 48.9%;
+  top: 16.4%;
+}
+
+.cmaes-sampling-label-right {
+  left: 80.9%;
+  top: 16.4%;
+}
+
+.cmaes-adaptation-frame {
+  display: block;
+  width: min(1000px, calc(100vw - 2rem));
+  height: 820px;
+  margin: 1rem 0 1.25rem;
+  margin-left: calc((100% - min(1000px, calc(100vw - 2rem))) / 2);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cmaes-step-size-frame {
+  display: block;
+  width: min(1000px, calc(100vw - 2rem));
+  height: 700px;
+  margin: 1rem 0 1.25rem;
+  margin-left: calc((100% - min(1000px, calc(100vw - 2rem))) / 2);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cmaes-pseudocode-frame {
+  display: block;
+  width: min(760px, 100%);
+  height: 500px;
+  margin: 1rem 0 1.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.de-pseudocode-frame {
+  display: block;
+  width: min(820px, 100%);
+  height: 720px;
+  margin: 1rem 0 1.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.de-pseudocode-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.de-pseudocode-frame > div {
+  width: 100% !important;
+  height: 100%;
+  padding-bottom: 0 !important;
+}
+
+.ga-tsp-pseudocode-frame,
+.pso-pseudocode-frame,
+.aco-tsp-pseudocode-frame {
+  display: block;
+  width: min(860px, 100%);
+  margin: 1rem 0 1.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.ga-tsp-pseudocode-frame {
+  width: min(780px, 100%);
+  height: 360px;
+}
+
+.pso-pseudocode-frame {
+  height: 720px;
+}
+
+.aco-tsp-pseudocode-frame {
+  height: 560px;
+}
+
+@media (max-width: 720px) {
+  .cmaes-adaptation-frame {
+    height: 920px;
+  }
+
+  .cmaes-step-size-frame {
+    height: 760px;
+  }
+
+  .cmaes-pseudocode-frame {
+    height: 560px;
+  }
+
+  .de-pseudocode-frame {
+    height: 820px;
+  }
+
+  .ga-tsp-pseudocode-frame {
+    height: 420px;
+  }
+
+  .pso-pseudocode-frame {
+    height: 820px;
+  }
+
+  .aco-tsp-pseudocode-frame {
+    height: 660px;
+  }
+}
