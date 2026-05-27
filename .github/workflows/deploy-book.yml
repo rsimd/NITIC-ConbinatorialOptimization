@@ -48,7 +48,7 @@ jobs:
       - name: Copy standalone HTML assets
         run: |
           mkdir -p _build/html/assets
-          cp assets/lecture07_cmaes_adaptation_animation.html _build/html/assets/
+          cp assets/*.html _build/html/assets/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
