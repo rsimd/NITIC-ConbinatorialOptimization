@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.css">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1rem 1.1rem 1.2rem;
+      overflow-x: auto;
+      box-sizing: border-box;
+    }
+
+    .pseudocode {
+      min-width: 700px;
+      margin: 0;
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .ps-root {
+      margin: 0;
+    }
+
+    .ps-algorithm {
+      margin: 0;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .ps-line-number {
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+<pre id="cmaes-pseudocode" class="pseudocode">\begin{algorithm}
+\caption{CMA-ES (minimization)}
+\begin{algorithmic}
+\REQUIRE objective function $f$, initial mean $m$, initial step size $\sigma$, maximum generations $T$
+\STATE $C \gets I$, $p_\sigma \gets 0$, $p_c \gets 0$
+\STATE choose $\lambda, \mu$, weights $w_i$, and learning rates from dimension $n$
+\FOR{$t = 1,\ldots,T$}
+  \STATE decompose $C = B D^2 B^\top$
+  \FOR{$k = 1,\ldots,\lambda$}
+    \STATE sample $z_k \sim \mathcal{N}(0, I)$
+    \STATE $y_k \gets B D z_k$
+    \STATE $x_k \gets m + \sigma y_k$
+    \STATE $f_k \gets f(x_k)$
+  \ENDFOR
+  \STATE sort candidates by $f_k$ and select the best $\mu$
+  \STATE $y_w \gets \sum_{i=1}^{\mu} w_i y_{i:\lambda}$
+  \STATE $m \gets m + \sigma y_w$
+  \STATE update $p_\sigma$ and $\sigma$
+  \STATE update $p_c$ and $C$ by rank-one and rank-$\mu$ updates
+\ENDFOR
+\RETURN best-so-far $x$
+\end{algorithmic}
+\end{algorithm}</pre>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pseudocode@2.4.1/build/pseudocode.min.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const target = document.getElementById("cmaes-pseudocode");
+      if (!window.pseudocode || !target) {
+        return;
+      }
+      const fallback = target.textContent;
+      try {
+        window.pseudocode.renderElement(target, { lineNumber: true });
+      } catch (error) {
+        target.textContent = fallback;
+        target.dataset.renderError = "true";
+        console.warn("pseudocode.js render failed", error);
+      }
+    });
+  </script>
+</body>
+</html>
