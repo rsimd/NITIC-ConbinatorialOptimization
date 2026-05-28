@@ -5,13 +5,13 @@ description: 組合せ最適化とブラックボックス最適化を扱う Jup
 
 [Jupyter Book](https://jupyterbook.org/)（[MyST](https://mystmd.org/)）でビルドした Markdown ドキュメントである。組合せ最適化の代表的な問題と，目的関数の中身を直接使わずに評価値から探索するブラックボックス最適化の手法を扱う。左の目次から各回のページを開ける。
 
-- [第1回：導入（組合せ最適化とは何か）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture01-intro-optimization)
-- [第2回：binary GA による特徴選択（SVM × 手書き数字）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture02-ga-binary)
-- [第2回（続）：遺伝的アルゴリズムと TSP](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture03-ga-tsp-formal)
-- [第4回：群知能と粒子群最適化（PSO）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture04-pso)
-- [第5回：アリコロニー最適化（ACO）と対称旅行商人問題（TSP）の近似](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture05-aco-tsp)
-- [第6回：Differential Evolution（DE）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture06-de)
-- [第7回：CMA-ES（共分散行列適応進化戦略）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture07-cmaes)
+- [第1回：ガイダンス：組合せ最適化とブラックボックス最適化](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture01-intro-optimization)
+- [第2回：バイナリ遺伝的アルゴリズム（Binary Genetic Algorithm, Binary GA）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture02-ga-binary)
+- [第3回：遺伝的アルゴリズム（Genetic Algorithm, GA）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture03-ga-tsp-formal)
+- [第4回：粒子群最適化（Particle Swarm Optimization, PSO）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture04-pso)
+- [第5回：アリコロニー最適化（Ant Colony Optimization, ACO）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture05-aco-tsp)
+- [第6回：差分進化（Differential Evolution, DE）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture06-de)
+- [第7〜8回：共分散行列適応進化戦略（Covariance Matrix Adaptation Evolution Strategy, CMA-ES）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture07-cmaes)
 
 ## リポジトリと公開 URL
 

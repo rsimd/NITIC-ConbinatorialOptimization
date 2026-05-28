@@ -11,12 +11,12 @@ project:
   github: https://github.com/rsimd/NITIC-ConbinatorialOptimization
   toc:
     - file: index.md
-    - file: lecture01_intro_optimization.md
+    - file: lecture01_intro_optimization.ipynb
     - file: lecture02_ga_binary.ipynb
     - file: lecture03_ga_tsp_formal.ipynb
     - file: lecture04_pso.ipynb
     - file: lecture05_aco_tsp.ipynb
-    - file: lecture06_de.md
+    - file: lecture06_de.ipynb
     - file: lecture07_cmaes.ipynb
 
 site:
@@ -25,3 +25,7 @@ site:
     logo_text: OptNotes
     logo_url: https://github.com/rsimd/NITIC-ConbinatorialOptimization
     style: styles/site.css
+  parts:
+    navbar_end: |
+      <a class="opt-sidebar-toggle opt-sidebar-toggle-left" href="javascript:document.body.classList.toggle('opt-sidebar-left-collapsed')" role="button" title="Toggle Table of Contents">Table of Contents</a>
+      <a class="opt-sidebar-toggle opt-sidebar-toggle-right" href="javascript:document.body.classList.toggle('opt-sidebar-right-collapsed')" role="button" title="Toggle On this page">On this page</a>

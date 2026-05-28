@@ -24,6 +24,7 @@ uv run jupyter-book start
 ```bash
 uv sync --frozen --all-groups
 BASE_URL=/NITIC-ConbinatorialOptimization uv run jupyter-book build --html --ci
+uv run python scripts/postprocess_sidebar_toggles.py _build/html
 ```
 
 生成物は `_build/html/` に出力されます。

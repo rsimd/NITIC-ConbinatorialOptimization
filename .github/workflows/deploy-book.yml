@@ -45,10 +45,17 @@ jobs:
           BASE_URL: /NITIC-ConbinatorialOptimization
         run: uv run jupyter-book build --html --ci
 
+      - name: Add sidebar toggle behavior
+        run: uv run python scripts/postprocess_sidebar_toggles.py _build/html
+
       - name: Copy standalone HTML assets
         run: |
           mkdir -p _build/html/assets
           cp assets/*.html _build/html/assets/
+          if [ -d slides ]; then
+            mkdir -p _build/html/slides
+            cp slides/*.html _build/html/slides/
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

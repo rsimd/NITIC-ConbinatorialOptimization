@@ -1,4 +1,22 @@
 /* Let the main article column grow with the browser width. */
+:root {
+  --opt-primary-sidebar-width: 18rem;
+  --opt-page-outline-width: 14rem;
+  --opt-sidebar-tab-height: 2.25rem;
+  --opt-sidebar-tab-width: 10.5rem;
+  --opt-sidebar-tab-edge-offset: -4.125rem;
+  --opt-sidebar-tab-top: calc(50vh - 1.125rem);
+  --opt-viewport-scrollbar-width: calc(100vw - 100%);
+}
+
+body.opt-sidebar-left-collapsed {
+  --opt-primary-sidebar-width: 0rem;
+}
+
+body.opt-sidebar-right-collapsed {
+  --opt-page-outline-width: 0rem;
+}
+
 .article-grid {
   grid-template-columns:
     [screen-start screen-inset-start] 0.5rem
@@ -47,7 +65,7 @@
       [middle-end] minmax(0, 1fr)
       [body-inset-end] 1rem
       [body-end gutter-right-end] 1.5rem
-      [body-outset-end] 14rem
+      [body-outset-end] var(--opt-page-outline-width)
       [page-inset-end] 1.5rem
       [page-end] 1.5rem
       [screen-inset-end] 0.25rem [screen-end];
@@ -61,7 +79,7 @@
       [screen-start] 0.25rem
       [screen-inset-start] 1rem
       [page-start] 0
-      [page-inset-start] 18rem
+      [page-inset-start] var(--opt-primary-sidebar-width)
       [body-outset-start] 1.5rem
       [body-start gutter-left-start] 1rem
       [body-inset-start] minmax(0, 1fr)
@@ -72,7 +90,7 @@
       [middle-end] minmax(0, 1fr)
       [body-inset-end] 1rem
       [body-end gutter-right-end] 1.5rem
-      [body-outset-end] 14rem
+      [body-outset-end] var(--opt-page-outline-width)
       [page-inset-end] 1.5rem
       [page-end] 1rem
       [screen-inset-end] 0.25rem [screen-end];
@@ -86,7 +104,7 @@
       [screen-start] 0.5rem
       [screen-inset-start] 1rem
       [page-start] 0
-      [page-inset-start] 18rem
+      [page-inset-start] var(--opt-primary-sidebar-width)
       [body-outset-start] 1.5rem
       [body-start gutter-left-start] 1rem
       [body-inset-start] minmax(0, 1fr)
@@ -97,10 +115,111 @@
       [middle-end] minmax(0, 1fr)
       [body-inset-end] 1rem
       [body-end gutter-right-end] 1.5rem
-      [body-outset-end] 14rem
+      [body-outset-end] var(--opt-page-outline-width)
       [page-inset-end] 1.5rem
       [page-end] 1rem
       [screen-inset-end] 0.5rem [screen-end];
+  }
+}
+
+.myst-navbar-end:has(.opt-sidebar-toggle) > p {
+  display: contents;
+}
+
+.opt-sidebar-toggle {
+  position: fixed;
+  z-index: 45;
+  top: var(--opt-sidebar-tab-top);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--opt-sidebar-tab-width);
+  height: var(--opt-sidebar-tab-height);
+  padding: 0 0.75rem;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+  color: #0f172a;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+  transform-origin: center center;
+}
+
+.myst-primary-sidebar-navbar-end:has(.opt-sidebar-toggle) {
+  display: none !important;
+}
+
+.myst-primary-sidebar-navbar-end .opt-sidebar-toggle,
+.opt-sidebar-toggle .link-icon {
+  display: none !important;
+}
+
+.opt-sidebar-toggle .link-text {
+  white-space: nowrap !important;
+}
+
+.opt-sidebar-toggle,
+.opt-sidebar-toggle:link,
+.opt-sidebar-toggle:visited {
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.opt-sidebar-toggle:hover,
+.opt-sidebar-toggle:focus-visible {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.opt-sidebar-toggle:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.32);
+  outline-offset: 2px;
+}
+
+.opt-sidebar-toggle-left {
+  left: var(--opt-sidebar-tab-edge-offset);
+  transform: rotate(-90deg);
+}
+
+.opt-sidebar-toggle-right {
+  right: calc(var(--opt-sidebar-tab-edge-offset) - var(--opt-viewport-scrollbar-width));
+  transform: rotate(90deg);
+}
+
+body.opt-sidebar-left-collapsed .myst-primary-sidebar,
+body.opt-sidebar-right-collapsed article.article > .lg\:col-margin-right,
+body.opt-sidebar-right-collapsed .opt-page-outline {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.myst-navbar-end:has(.opt-sidebar-toggle) {
+  display: flex !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .opt-sidebar-toggle {
+    border-color: #475569;
+    background: rgba(28, 25, 23, 0.96);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    color: #f8fafc;
+  }
+
+  .opt-sidebar-toggle:hover,
+  .opt-sidebar-toggle:focus-visible {
+    border-color: #60a5fa;
+    background: #1e293b;
+    color: #bfdbfe;
   }
 }
 
