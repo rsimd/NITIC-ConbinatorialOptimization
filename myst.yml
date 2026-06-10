@@ -19,6 +19,9 @@ project:
     - file: lecture06_de.ipynb
     - file: lecture07_cmaes.ipynb
     - file: lecture09_bayesian_optimization.ipynb
+    - file: lecture11_multi_objective_optuna.ipynb
+    - file: lecture12_constraints_optuna.ipynb
+    - file: lecture13_15_pbl.md
 
 site:
   template: book-theme
