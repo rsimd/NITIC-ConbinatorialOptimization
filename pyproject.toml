@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12.2"
 dependencies = [
+    "botorch>=0.18.1",
     "cmaes>=0.13.0",
     "jaxtyping>=0.3.10",
     "matplotlib>=3.10.8",

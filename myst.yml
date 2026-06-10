@@ -18,6 +18,7 @@ project:
     - file: lecture05_aco_tsp.ipynb
     - file: lecture06_de.ipynb
     - file: lecture07_cmaes.ipynb
+    - file: lecture09_bayesian_optimization.ipynb
 
 site:
   template: book-theme

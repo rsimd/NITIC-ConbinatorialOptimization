@@ -12,6 +12,7 @@ description: 組合せ最適化とブラックボックス最適化を扱う Jup
 - [第5回：アリコロニー最適化（Ant Colony Optimization, ACO）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture05-aco-tsp)
 - [第6回：差分進化（Differential Evolution, DE）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture06-de)
 - [第7〜8回：共分散行列適応進化戦略（Covariance Matrix Adaptation Evolution Strategy, CMA-ES）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture07-cmaes)
+- [第9回：ベイズ最適化（Bayesian Optimization, BO）](https://rsimd.github.io/NITIC-ConbinatorialOptimization/lecture09-bayesian-optimization)
 
 ## リポジトリと公開 URL
 
